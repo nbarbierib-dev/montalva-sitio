@@ -1,14 +1,14 @@
 /* ==========================================================================
    Juan Pablo Montalva Peroni — comportamiento del sitio
-   Requiere (en este orden, ver index.html): jQuery, Magnific Popup, WOW,
-   Vimeo Player, lightGallery y su plugin de video.
+   Requiere (en este orden, ver index.html): jQuery, Magnific Popup, WOW y
+   Vimeo Player.
 
    1. Precarga
    2. Animación de entrada al hacer scroll
    3. Portada: cambio de imagen al pasar el mouse (en pantallas táctiles,
       las imágenes cambian solas)
    4. Fotos: visor Magnific Popup (y carrusel en 4b)
-   5. Videos: visor lightGallery
+   5. Videos: el mismo visor Magnific Popup, con el reproductor de Vimeo
    6. Videos de la página: se pausan cuando no están en pantalla
    ========================================================================== */
 
@@ -67,22 +67,24 @@
 
   /* 4. Fotos: todas las fotos del sitio forman una sola galería navegable */
   // Al abrirse, el visor lleva la página arriba; al cerrarse se vuelve al
-  // punto de partida sin la animación de scroll suave.
-  var photoScrollY = 0;
+  // punto de partida sin la animación de scroll suave. (Lo usan fotos y videos.)
+  var viewerScrollY = 0;
+  var keepScroll = {
+    beforeOpen: function () {
+      viewerScrollY = window.scrollY;
+    },
+    afterClose: function () {
+      window.scrollTo({ top: viewerScrollY, behavior: 'instant' });
+    }
+  };
+  var CLOSE_MARKUP = '<button title="%title%" type="button" class="mfp-close">Close</button>';
 
   $('.image-popup').magnificPopup({
-    callbacks: {
-      beforeOpen: function () {
-        photoScrollY = window.scrollY;
-      },
-      afterClose: function () {
-        window.scrollTo({ top: photoScrollY, behavior: 'instant' });
-      }
-    },
+    callbacks: keepScroll,
     type: 'image',
     removalDelay: 0,
     mainClass: 'mfp-with-zoom',
-    closeMarkup: '<button title="%title%" type="button" class="mfp-close">Close</button>',
+    closeMarkup: CLOSE_MARKUP,
     gallery: { enabled: true },
     image: {
       // En los retratos el título es el pie de foto (con la profesión en cursiva)
@@ -207,31 +209,56 @@
   });
 
 
-  /* 5. Videos: cada bloque .js-video-gallery abre sus videos de Vimeo */
-  document.querySelectorAll('.js-video-gallery').forEach(function (gallery) {
-    lightGallery(gallery, {
-      plugins: [lgVideo],
-      selector: 'a',
-      download: false,
-      counter: false,
-      // En celulares lightGallery oculta por defecto el botón de cerrar y las flechas
-      mobileSettings: { controls: true, showCloseIcon: true, download: false },
-      // Si el video arranca solo, el navegador obliga a Vimeo a silenciarlo;
-      // esperando a que se presione play, siempre suena.
-      autoplayFirstVideo: false
-    });
+  /* 5. Videos: cada bloque .js-video-gallery es una galería en el mismo visor
+     de las fotos. Cada enlace trae data-src (dirección del video en Vimeo),
+     data-size (ancho-alto real, para la proporción) y title (pie del visor).
+     El video no arranca solo: si lo hiciera, el navegador obligaría a Vimeo
+     a silenciarlo; al presionar play siempre suena. */
+  function vimeoEmbedUrl(url) {
+    // vimeo.com/123 o vimeo.com/123/abc (videos no listados, con clave)
+    var m = url.match(/vimeo\.com\/(\d+)(?:\/(\w+))?/);
+    return 'https://player.vimeo.com/video/' + m[1] + (m[2] ? '?h=' + m[2] : '');
+  }
 
-    // lightGallery abre Vimeo siempre en silencio (muted=1); en el visor
-    // se activa el sonido con la API de Vimeo apenas se inserta el video.
-    gallery.addEventListener('lgHasVideo', function () {
-      setTimeout(function () {
-        document.querySelectorAll('.lg-outer iframe.lg-vimeo:not([data-sound])').forEach(function (iframe) {
-          iframe.setAttribute('data-sound', '');
-          var player = new Vimeo.Player(iframe);
-          player.setMuted(false);
-          player.setVolume(1);
-        });
-      }, 0);
+  document.querySelectorAll('.js-video-gallery').forEach(function (gallery) {
+    $(gallery).magnificPopup({
+      delegate: 'a',
+      type: 'iframe',
+      removalDelay: 0,
+      closeMarkup: CLOSE_MARKUP,
+      gallery: { enabled: true },
+      iframe: {
+        markup:
+          '<div class="mfp-iframe-scaler">' +
+            '<div class="mfp-close"></div>' +
+            '<iframe class="mfp-iframe" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>' +
+            '<div class="mfp-bottom-bar"><div class="mfp-title"></div></div>' +
+          '</div>',
+        // La dirección ya viene armada (vimeoEmbedUrl); este patrón sólo evita
+        // que el visor la reescriba con su formato de Vimeo por defecto.
+        patterns: {
+          vimeo: {
+            index: 'player.vimeo.com/video/',
+            id: function (url) { return url.split('/video/')[1]; },
+            src: 'https://player.vimeo.com/video/%id%'
+          }
+        }
+      },
+      callbacks: $.extend({}, keepScroll, {
+        elementParse: function (item) {
+          item.src = vimeoEmbedUrl(item.el.attr('data-src'));
+        },
+        // Se arma el reproductor de cada video: título y tamaño según su
+        // proporción real (hasta 1280px de ancho, 90% del ancho de la
+        // pantalla o 72% de su alto)
+        markupParse: function (template, values, item) {
+          var size = (item.el.attr('data-size') || '16-9').split('-');
+          var ratio = size[0] / size[1];
+          values.title = item.el.attr('title');
+          template.css('padding-top', (100 / ratio) + '%');   // template = .mfp-iframe-scaler
+          this.contentContainer.css('max-width', 'min(1280px, 90vw, calc(72vh * ' + ratio + '))');
+        }
+      })
     });
   });
 

@@ -1,13 +1,15 @@
 /* ==========================================================================
    Ventanas emergentes (lightbox)
    --------------------------------------------------------------------------
-   Personalización de las dos librerías de css/vendor/, que quedan sin tocar:
-   1. Magnific Popup 1.1.0  → fotos (enlaces .image-popup)
-   2. lightGallery 2.5.0    → videos de Vimeo (.js-video-gallery)
+   Personalización de Magnific Popup 1.1.0 (css/vendor/, que queda sin tocar).
+   Un solo visor para todo el sitio:
+   1. Fotos (enlaces .image-popup) — y lo común: fondo, Close, flechas, título
+   2. Videos de Vimeo (.js-video-gallery), con el mismo diseño
+   3. Celular
    ========================================================================== */
 
 
-/* 1. Magnific Popup — fotos
+/* 1. Fotos (y lo común a fotos y videos)
    ========================================================================== */
 
 /* Fondo claro, igual al del sitio */
@@ -134,146 +136,25 @@ button.mfp-close {
 }
 
 
-/* 2. lightGallery — videos
+/* 2. Videos
+   El tamaño de cada video lo calcula js/main.js según su proporción real.
+   Close, flechas y título son los mismos de las fotos (sección 1).
    ========================================================================== */
 
-/* Fondo claro, igual al del sitio */
-.lg-backdrop {
-  background-color: #fefef5;
-}
-
-.lg-outer .lg-item {
-  will-change: transform, opacity;
-}
-
-/* Barra superior: sólo el botón de cerrar, escrito como texto "Close" */
-.lg-toolbar .lg-icon {
-  padding: 0;
-  color: var(--color-text);
-  line-height: 80px;
-  opacity: 1;
-}
-
-/* Mismo lugar que el "Close" del visor de fotos. Se mide con vh/vw porque la
-   barra (.lg-toolbar) es la referencia del position: fixed y sólo mide 47px;
-   el hover sólo cambia el color, nunca la posición. */
-.lg-toolbar .lg-close::after {
-  position: fixed;
-  top: 4vh;
-  right: 2vw;
-  width: 100vw;
-  height: 44px;
-  padding-right: 6px;
-  color: var(--color-text);
-  font-size: var(--fs-s);
-  line-height: 44px;
-  text-align: right;
-  cursor: pointer !important;
-}
-
-.lg-toolbar .lg-close::after {
-  content: "Close";
-  font-family: var(--font-main);
-}
-
-.lg-toolbar .lg-close:hover::after,
-.lg-toolbar .lg-close:focus::after {
-  color: var(--color-text-hover);
-}
-
-.lg-toolbar .lg-maximize,
-.lg-toolbar .lg-download,
-.lg-counter {
-  display: none;
-}
-
-/* Flechas: las mismas que en el visor de fotos (sección 1). Se reproduce
-   el ángulo fino de Magnific Popup: una esquina de 1px rotada, gris
-   (0.2 de negro dibujado dos veces y al 65 % de opacidad ≈ 0.234). */
-.lg-outer .lg-prev,
-.lg-outer .lg-next {
-  /* las flechas se ubican dentro de .lg-content (47px arriba, 14px abajo);
-     se corrige para que queden a la misma altura que en el visor de fotos */
-  top: calc(50% - 16.5px);
-  width: 25px;
-  height: 25px;
-  margin-top: -55px;
-  padding: 0;
-  border-radius: 0;
-  background: none;
-  font-size: 0;
-}
-
-.lg-outer .lg-prev { left: 1%; }
-.lg-outer .lg-next { right: 4%; }
-
-.lg-outer .lg-prev::after,
-.lg-outer .lg-next::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  box-sizing: border-box;
-  width: 25px;
-  height: 26px;
-  margin-top: 35px;
-  margin-left: 35px;
-  box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.234);
-}
-
-.lg-outer .lg-prev::after { transform: rotate(135deg); }
-.lg-outer .lg-next::before { transform: rotate(315deg); }
-
-.lg-outer .lg-prev:hover:not(.disabled)::after,
-.lg-outer .lg-next:hover:not(.disabled)::before {
-  box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.36);
-}
-
-/* Título del video bajo el reproductor */
-.lg-sub-html {
-  position: relative;
-  right: -5%;
-  width: 100%;
-  margin-bottom: 3%;
-  padding: 0;
-  color: var(--color-text);
-  font-family: var(--font-main);
-  font-size: var(--fs-m);
-  font-style: normal;
-  font-weight: normal;
-  text-align: inherit;
-  word-wrap: break-word;
-  opacity: 1;
-  cursor: auto;
-  z-index: auto;
-  transition: none;
-}
-
-/* El reproductor ocupa el 90% del alto para dejar lugar al título */
-.lg-outer .lg-video-cont .lg-object {
-  height: 90% !important;
-}
-
-.lg-outer .lg-video-object {
-  position: static;
-}
-
-/* La librería bloquea el scroll de la página con el visor abierto;
-   el diseño original no lo hacía. */
-.lg-overlay-open {
-  overflow: visible;
+/* Sin sombra alrededor del reproductor, como las fotos */
+.mfp-iframe-scaler iframe {
+  box-shadow: none;
 }
 
 
 /* 3. Celular
    Las flechas pasan abajo a la derecha, junto al título, donde se ven sobre
    el fondo claro (al costado de la foto quedaban fuera de la pantalla o
-   encima de la imagen). Se puede deslizar entre fotos (js/main.js) y videos.
+   encima de la imagen). Se puede deslizar con el dedo (js/main.js).
    ========================================================================== */
 
 @media (max-width: 767px) {
 
-  /* Fotos */
   .mfp-arrow-left,
   .mfp-arrow-right {
     top: auto;
@@ -299,32 +180,5 @@ button.mfp-close {
 
   .mfp-counter {
     display: none;
-  }
-
-  /* Videos */
-  .lg-outer .lg-prev,
-  .lg-outer .lg-next {
-    top: auto;
-    bottom: calc(4vh - 18px);   /* .lg-content termina 14px antes del borde */
-    margin-top: 0;
-  }
-
-  .lg-outer .lg-prev { left: auto; right: calc(2% + 50px); }
-  .lg-outer .lg-next { right: calc(2% + 10px); }
-
-  .lg-outer .lg-prev::after,
-  .lg-outer .lg-next::before {
-    margin-top: 0;
-    margin-left: 0;
-  }
-
-  .lg-sub-html {
-    position: fixed;
-    right: auto;
-    bottom: 4vh;
-    left: 5%;
-    width: auto;
-    max-width: calc(93% - 90px);
-    margin: 0;
   }
 }

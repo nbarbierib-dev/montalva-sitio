@@ -9,9 +9,8 @@ o usa la extensión **Live Server** de VS Code.
 index.html            Página única, dividida en secciones (ver comentarios <!-- ... -->)
 css/
   main.css            Estilos del sitio (índice numerado al inicio del archivo)
-  lightbox.css        Diseño de los visores de fotos y videos
+  lightbox.css        Diseño del visor de fotos y videos
   vendor/             Librerías externas — NO editar (los cambios van en main.css o lightbox.css)
-  fonts/              Íconos del visor de videos (lightGallery)
 js/
   main.js             Comportamiento del sitio (portada, animaciones, visores)
   vendor/             Librerías externas — NO editar
@@ -54,5 +53,5 @@ una barra de título:
 
 ## Librerías
 
-Bootstrap 3.3.6 · animate.css · WOW.js 1.0.2 · jQuery 2.2.3 · Magnific Popup 1.1.0 ·
-lightGallery 2.5.0 (+ plugin video) · Vimeo Player 2.30
+Bootstrap 3.3.6 · animate.css · WOW.js 1.0.2 · jQuery 2.2.3 · Magnific Popup 1.1.0
+(visor de fotos y videos) · Vimeo Player 2.30

@@ -2,7 +2,7 @@
    Juan Pablo Montalva Peroni — estilos del sitio
    --------------------------------------------------------------------------
    Se carga después de las librerías de css/vendor/ (Bootstrap 3, animate,
-   lightGallery, Magnific Popup). Las librerías no se editan: todo lo propio
+   Magnific Popup). Las librerías no se editan: todo lo propio
    va aquí, y lo de las ventanas emergentes (lightbox) va en lightbox.css.
 
    0.  Variables (tipografía y colores)
@@ -560,7 +560,7 @@ main > #portraits {
 
 
 /* 10. Galerías de video
-   Miniaturas de Vimeo en loop; al hacer clic se abre el video (lightGallery).
+   Miniaturas de Vimeo en loop; al hacer clic se abre el video en el visor.
    ========================================================================== */
 
 .video-gallery {
