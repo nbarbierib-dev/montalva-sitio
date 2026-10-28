@@ -280,8 +280,9 @@ strong {
   position: absolute;
   top: 0;
   right: 0;
-  bottom: 0;
   left: 0;
+  height: 100vh;   /* misma unidad que el menú (.site-header): en celulares 100vh y
+                      el alto de la página no coinciden y quedaba un espacio extra */
   background-image: url('../images/background/Cover_2026.001.jpeg');
   background-position: center;
   background-repeat: no-repeat;
@@ -718,10 +719,6 @@ main > #portraits {
   box-shadow: 1px 1px 0 #fff;
 }
 
-@media (max-width: 767px) {
-  .carousel { width: 100%; }
-}
-
 
 /* 11. Textos de films y proyectos
    ========================================================================== */
@@ -859,6 +856,30 @@ main > #portraits {
 
 @media (max-width: 767px) {
 
+  /* Borde del texto: los textos van dentro de filas que se salen --bleed del
+     margen y tienen 1.4% de margen interno. Los videos se alinean a ese borde. */
+  :root {
+    --text-edge: calc(-1 * var(--bleed) + 1.4%);
+  }
+
+  /* Portada → Biografía: 30px en celular (50px en escritorio) */
+  .about {
+    padding-top: calc(30px - var(--page-padding));
+  }
+
+  /* Reel y Narrative Films: mismo ancho que el texto */
+  .film-row {
+    margin-right: var(--text-edge);
+    margin-left: var(--text-edge);
+  }
+
+  /* Carruseles (Yeta System, Saint Peter): mismo ancho que el texto */
+  .carousel {
+    width: auto;
+    margin-right: var(--text-edge);
+    margin-left: var(--text-edge);
+  }
+
   /* Commissioned: cada proyecto es una fila que se desliza con el dedo.
      Todas las fotos tienen el mismo alto; se asoma la foto siguiente. */
   #commissioned .project > .row {
@@ -912,8 +933,8 @@ main > #portraits {
   #films-commissioned a:last-child,
   #commissioned-films .project-title {
     width: auto;
-    margin-right: calc(5px - var(--bleed));
-    margin-left: calc(5px - var(--bleed));
+    margin-right: var(--text-edge);
+    margin-left: var(--text-edge);
     float: none;
   }
 
@@ -941,8 +962,8 @@ main > #portraits {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: var(--space-s);
-    margin-right: calc(5px - var(--bleed));   /* mismo ancho que las fotos de Commissioned */
-    margin-left: calc(5px - var(--bleed));
+    margin-right: var(--text-edge);   /* mismo ancho que el texto */
+    margin-left: var(--text-edge);
   }
 
   /* El título y el texto conservan su posición: se compensa el margen de la
@@ -950,9 +971,19 @@ main > #portraits {
   #motion > .section-bar,
   #motion > .section-intro {
     grid-column: 1 / -1;
-    margin-right: -5px;
-    margin-left: -5px;
     margin-bottom: calc(var(--space-section) - var(--space-s));
+  }
+
+  /* La línea vuelve a salirse hasta el borde, como en las demás secciones;
+     el párrafo queda alineado con el texto y los videos */
+  #motion > .section-bar {
+    margin-right: -1.4%;
+    margin-left: -1.4%;
+  }
+
+  #motion > .section-intro {
+    margin-right: 0;
+    margin-left: 0;
   }
 
   #motion > .row,

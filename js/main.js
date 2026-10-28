@@ -214,6 +214,8 @@
       selector: 'a',
       download: false,
       counter: false,
+      // En celulares lightGallery oculta por defecto el botón de cerrar y las flechas
+      mobileSettings: { controls: true, showCloseIcon: true, download: false },
       // Si el video arranca solo, el navegador obliga a Vimeo a silenciarlo;
       // esperando a que se presione play, siempre suena.
       autoplayFirstVideo: false
