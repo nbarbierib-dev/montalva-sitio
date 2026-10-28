@@ -119,6 +119,16 @@ iframe {
   border: 0;
 }
 
+/* Proporción de cada foto tomada de sus atributos width/height. Las fotos
+   usan height: auto, y con eso Chrome no considera esos atributos como
+   "dimensiones explícitas" y marca cada foto con loading="lazy" en el panel
+   de problemas. Los navegadores que no soportan attr() ignoran la regla y
+   usan los atributos igual que antes. Los atributos deben coincidir con el
+   archivo real, o la foto se deforma. */
+img[width][height] {
+  aspect-ratio: attr(width type(<number>)) / attr(height type(<number>));
+}
+
 
 /* 2. Tipografía
    ========================================================================== */
