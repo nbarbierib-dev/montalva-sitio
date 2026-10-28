@@ -1,0 +1,995 @@
+/* ==========================================================================
+   Juan Pablo Montalva Peroni — estilos del sitio
+   --------------------------------------------------------------------------
+   Se carga después de las librerías de css/vendor/ (Bootstrap 3, animate,
+   lightGallery, Magnific Popup). Las librerías no se editan: todo lo propio
+   va aquí, y lo de las ventanas emergentes (lightbox) va en lightbox.css.
+
+   0.  Variables (tipografía y colores)
+   1.  Base
+   2.  Tipografía
+   3.  Grilla (ajustes sobre Bootstrap)
+   4.  Menú (encabezado)
+   5.  Portada
+   6.  Precarga
+   7.  Espaciado vertical, barras de sección y títulos
+   8.  Biografía y CV
+   9.  Galerías de fotos y retratos
+   10. Galerías de video
+   11. Textos de films y proyectos
+   12. Ajustes de posición puntuales
+   13. Footer
+   14. Celular: Commissioned, Commissioned Films y Motion
+   15. Celular: texto y menú
+   ========================================================================== */
+
+
+/* 0. Variables — tipografía y colores del sitio
+   Para cambiar la letra o los colores de todo el sitio, edita sólo aquí.
+   Los tamaños crecen con el ancho de la pantalla (vw) pero nunca bajan
+   del mínimo en px, para que en celular se pueda leer.
+   ========================================================================== */
+
+:root {
+ --font-main: Arial, Helvetica, sans-serif;
+  --font-texts: 'Times New Roman', Times, serif;  /* textos de films y proyectos */
+  --color-text: #bababa;
+  --color-menu: #ffffff;    /* única excepción: el menú va sobre las fotos de portada */
+  --color-text-hover: #666666;
+
+  --fs-xs: max(10px, 0.6vw);     /* notas secundarias               */
+  --fs-s:  max(11px, 0.7vw);     /* títulos de sección y proyectos  */
+  --fs-m:  max(12px, 0.75vw);    /* párrafos, listas y títulos de Biografía / CV */
+  --fs-menu: max(11px, 1.4vh);   /* menú de la portada              */
+
+  --line-height: 1.2;
+
+  /* Espaciado vertical: medidas para todo el sitio */
+  --space-s: 10px;    /* línea → título · foto → su pie                  */
+  --space-m: 20px;    /* entre filas de una galería · texto → contenido  */
+  --space-section: calc(var(--space-m) * 4 / 3);  /* título → contenido */
+  --space-l: 40px;    /* entre proyectos, bloques y secciones            */
+  --space-xl: 100px;  /* portada → Biografía                             */
+
+  --page-padding: 40px;  /* margen de la página (body) */
+  /* Cuánto se salen filas y barras del margen de la página (quedan a 5px del borde) */
+  --bleed: calc(var(--page-padding) - 5px);
+}
+
+/* Celular: margen de la página más angosto */
+@media (max-width: 767px) {
+  :root {
+    --page-padding: 20px;
+  }
+}
+
+
+/* 1. Base
+   ========================================================================== */
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  padding: var(--page-padding);
+  background: #fefef4;
+  color: var(--color-text);
+  font-family: var(--font-main);
+  font-style: normal;
+  font-weight: normal;
+  line-height: var(--line-height);
+  overflow-x: hidden;
+}
+
+a {
+  color: var(--color-text);
+  text-decoration: none !important;
+  transition: 0.5s;
+}
+
+a:hover,
+a:focus,
+a:active {
+  color: var(--color-text-hover);
+}
+
+button {
+  background: transparent;
+}
+
+iframe {
+  border: 0;
+}
+
+
+/* 2. Tipografía
+   ========================================================================== */
+
+p {
+  color: var(--color-text);
+  font-size: var(--fs-m);
+  font-weight: normal;
+  line-height: var(--line-height);
+  letter-spacing: 0.2px;
+  text-align: justify;
+}
+
+strong {
+  color: var(--color-text);
+  font-weight: bold;
+  font-size: larger;
+}
+
+
+/* 3. Grilla (ajustes sobre Bootstrap)
+   ========================================================================== */
+
+.container {
+  max-width: 100%;
+}
+
+@media (min-width: 768px) {
+  .container {
+    width: 95%;
+  }
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  margin-right: calc(-1 * var(--bleed));
+  margin-left: calc(-1 * var(--bleed));
+  padding: 0;
+}
+
+/* Bootstrap usa 15px de margen interno en las columnas; aquí es proporcional. */
+[class*="col-"] {
+  padding-right: 1.4%;
+  padding-left: 1.4%;
+}
+
+/* Anchos de columna a medida (sólo en pantallas de 992px o más) */
+@media (min-width: 992px) {
+  .col-md-2   { width: 17.34%; }
+  .col-md-3f  { float: left; width: 25.5%; }
+  .col-md-3i  { float: left; width: 22.8%; }
+  .col-md-5e  { float: left; width: 45.7%; }
+  .col-md-5f  { float: left; width: 44.3%; }
+  .col-md-5g  { float: left; width: 38.3%; }
+  .col-md-7a  { float: left; width: 48.2%; }
+  .col-md-7ab { float: left; width: 45.55%; }
+  .col-md-7ac { float: left; width: 53.9%; }
+  .col-md-7ad { float: left; width: 47.4%; }
+  .col-md-7b  { float: left; width: 51.5%; }
+  .col-md-7e  { float: left; width: 53.55%; }
+}
+
+
+/* 4. Menú (encabezado)
+   ========================================================================== */
+
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+}
+
+.site-header__name,
+.site-header__role,
+.site-header__work,
+.site-header__contact {
+  z-index: 999;
+  height: 150px;
+  color: var(--color-menu);
+  font-size: var(--fs-menu);
+  font-weight: normal;
+  line-height: var(--line-height);
+  letter-spacing: -0.2px;
+  text-align: left;
+}
+
+.site-header__name    { width: 25.6%; }
+.site-header__role    { width: 26.6%; }
+.site-header__work    { width: 18.6%; margin-left: 1vw; }
+.site-header__contact { width: 23.6%; text-align: right; }
+
+.site-header__work ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Enlaces del menú: siempre blancos para leerse sobre la portada.
+   Con el mouse, el foco o al hacer clic se aclaran un poco (no cambian de color). */
+.site-header a {
+  color: var(--color-menu);
+}
+
+.site-header a:hover,
+.site-header a:focus,
+.site-header a:active {
+  color: var(--color-menu);
+  opacity: 0.7;
+}
+
+.site-header__note {
+  position: relative;
+  right: 2vh;
+  float: right;
+  color: var(--color-menu);
+  font-size: var(--fs-menu);
+  font-weight: normal;
+  line-height: var(--line-height);
+  text-align: left;
+}
+
+/* Celular y tablet vertical: las columnas del menú se apilan */
+@media (max-width: 767px) {
+  .site-header {
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 1.2em;
+    padding: 0 6vw;
+  }
+
+  .site-header__name,
+  .site-header__role,
+  .site-header__work,
+  .site-header__contact {
+    width: 100%;
+    height: auto;
+    margin-left: 0;
+    text-align: left;
+  }
+
+  .site-header__note {
+    right: 0;
+    float: none;
+    margin-top: 1.2em;
+  }
+}
+
+
+/* 5. Portada
+   La imagen de fondo cambia al pasar el mouse por cada franja (js/main.js).
+   ========================================================================== */
+
+.cover {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-image: url('../images/background/Cover_2026.001.jpeg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  transition: all 0.05s ease-out;
+}
+
+.cover-active .cover {
+  z-index: 1;
+}
+
+/* Una franja vertical por portada (29 imágenes): 100% / 29 */
+.cover button {
+  position: relative;
+  float: left;
+  width: calc(100% / 29);
+  height: 100vh;
+  border: 0;
+  background: transparent;
+}
+
+.cover button::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  min-height: 30px;
+  transform: translate(-50%, -50%) scaleX(0);
+  transform-origin: 50%;
+}
+
+.cover-active button:hover {
+  z-index: 2;
+}
+
+.cover-active .cover button:hover::before {
+  transform: translate(-50%, -50%) scaleX(1);
+  transition: transform 0.2s 0.1s ease-out;
+}
+
+
+/* 6. Precarga
+   ========================================================================== */
+
+.preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background: #fff;
+}
+
+.spinner {
+  position: relative;
+  border: 1px solid transparent;
+  border-radius: 5px;
+}
+
+.spinner::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 65px;
+  height: 65px;
+  margin-top: -10px;
+  margin-left: -10px;
+  border: 1px solid #000;
+  border-top-color: #f9f9f9;
+  border-radius: 50%;
+  animation: spinner 0.9s linear infinite;
+}
+
+@keyframes spinner {
+  to { transform: rotate(360deg); }
+}
+
+
+/* 7. Espaciado vertical, barras de sección y títulos
+   Todos los espacios usan las variables --space-* (sección 0).
+   ========================================================================== */
+
+/* Ritmo vertical general */
+.about {
+  /* portada → Biografía = la mitad de --space-xl (50px). Se descuenta el margen
+     de la página, porque el menú (100vh) parte 40px más abajo que la imagen de portada. */
+  padding-top: calc(var(--space-xl) / 2 - var(--page-padding));
+}
+
+/* Fin de cada sección: el mismo espacio que entre los bloques del About */
+main {
+  padding-bottom: var(--space-l);
+}
+
+main > section ~ section {   /* ~ y no +: funciona aunque haya un <template> entre secciones */
+  margin-top: var(--space-l);
+}
+
+/* Retratos no tiene título: continúa Gallery como un bloque más */
+main > #portraits {
+  margin-top: var(--space-l);
+}
+
+.row + .row {
+  margin-top: var(--space-m);
+}
+
+.project + .project,
+.about .row + .row {
+  margin-top: var(--space-l);
+}
+
+/* Barra con línea superior y el nombre de la sección ("Commissioned", ...) */
+.section-bar {
+  display: flex;
+  align-items: center;
+  margin-right: calc(-1 * var(--bleed));
+  margin-left: calc(-1 * var(--bleed));
+  margin-bottom: var(--space-section);
+  border-top: 1px solid #c7c7c7;
+}
+
+/* Barra sólo con la línea (Yeta System, Saint Peter): el título va en el texto */
+.section-bar:empty {
+  margin-bottom: var(--space-s);
+}
+
+.section-heading {
+  margin: 0;
+  padding-top: var(--space-s);
+  color: var(--color-text);
+  font-family: var(--font-main);
+  font-size: var(--fs-m);   /* mismo tamaño que los párrafos */
+  font-style: normal;
+  font-weight: normal;
+  line-height: var(--line-height);
+  letter-spacing: 0;
+  text-align: left;
+}
+
+/* Texto introductorio bajo el título de una sección (The Chapters) */
+.section-intro {
+  margin: 0 calc(-1 * var(--bleed)) var(--space-section);   /* mismos márgenes laterales que .section-bar */
+}
+
+/* Pie con el nombre del proyecto, bajo cada grupo de fotos */
+.caption-row {
+  display: flex;
+  align-items: center;
+  margin-right: calc(-1 * var(--bleed));
+  margin-left: calc(-1 * var(--bleed));
+  margin-top: var(--space-s);
+  padding: 0 1.4%;
+}
+
+.caption-row--films {
+  position: relative;
+  margin-top: 1px;   /* menos que en las fotos: el borde claro de los videos se funde con el fondo */
+  padding: 0 1.4%;
+  column-gap: var(--space-m);
+}
+
+.project-title {
+  margin: 0;
+  color: var(--color-text);
+  font-family: var(--font-main);
+  font-size: var(--fs-s);
+  font-style: normal;
+  font-weight: normal;
+  line-height: var(--line-height);
+  letter-spacing: 0;
+}
+
+/* Segundo título de la fila de films, alineado bajo el segundo video */
+@media (min-width: 992px) {
+  .caption-row__second {
+    position: absolute;
+    left: 50.39%;
+    float: left;
+  }
+}
+
+@media (min-width: 768px) {
+  .section-bar,
+  .section-intro { margin-right: -24px; margin-left: -24px; }
+}
+
+@media (min-width: 992px) {
+  .section-bar,
+  .section-intro { margin-right: -17px; margin-left: -17px; }
+}
+
+@media (min-width: 1200px) {
+  .section-bar,
+  .section-intro { margin-right: -18px; margin-left: -18px; }
+}
+
+@media (min-width: 1300px) {
+  .section-bar,
+  .section-intro { margin-right: -15px; margin-left: -15px; }
+}
+
+
+/* 8. Biografía y CV
+   ========================================================================== */
+
+.section-title {
+  margin: 0;
+}
+
+.section-title > :last-child {
+  margin-bottom: 0;
+}
+
+.about-heading {
+  margin: 0 0 var(--space-m);
+  color: var(--color-text);
+  font-family: var(--font-main);
+  font-size: var(--fs-m);
+  font-weight: normal;
+  -webkit-text-stroke: 0.3px currentColor;  /* semibold simulado: Arial no tiene pesos intermedios */
+  line-height: var(--line-height);
+  letter-spacing: 0;
+}
+
+/* Texto de Biografía: un punto más chico que los títulos */
+.about p {
+  font-size: var(--fs-s);
+}
+
+.cv-list {
+  margin: 0;
+  list-style: none;
+  color: var(--color-text);
+  font-size: var(--fs-s);
+  font-weight: normal;
+  line-height: 1.5;  /* un poco más aireado que el resto del sitio */
+  letter-spacing: 0.2px;
+  text-align: justify;
+}
+
+
+/* 9. Galerías de fotos y retratos
+   ========================================================================== */
+
+.work-thumb {
+  width: 100%;
+}
+
+.portrait-caption {
+  color: var(--color-text);
+  font-size: var(--fs-s);
+  font-weight: normal;
+  line-height: var(--line-height);
+  text-align: left;
+}
+
+
+/* 10. Galerías de video
+   Miniaturas de Vimeo en loop; al hacer clic se abre el video (lightGallery).
+   ========================================================================== */
+
+.video-gallery {
+  position: relative;
+  width: 100%;
+}
+
+.video-gallery iframe {
+  width: 100%;
+  height: 100%;
+  pointer-events: none; /* el clic lo recibe el enlace, no el reproductor */
+}
+
+/* Commissioned Films, Motion y videos de Gallery: miniaturas en fila */
+#films-commissioned a,
+#motion-1 a,
+#motion-2 a,
+#gallery-videos a {
+  position: unset;
+  display: block;
+  float: left;
+  overflow: hidden;
+}
+
+/* Cada caja tiene la proporción de su video, para que Vimeo no deje
+   franjas vacías arriba y abajo. Los anchos hacen que ambas midan lo mismo de alto. */
+#films-commissioned a:first-child { width: 48.7%; aspect-ratio: 300 / 240; }
+#films-commissioned a:last-child  { width: 51.3%; aspect-ratio: 316 / 240; }
+
+#motion-1 a,
+#motion-2 a,
+#gallery-videos a,
+.video-placeholder {
+  width: 33.3%;
+  height: 33vh;
+}
+
+/* Narrative Films: un video por fila, en proporción fija */
+.film-row {
+  display: flex;
+  align-items: center;
+  margin-right: 0;
+  margin-left: 0;
+  padding: 0;
+}
+
+#film-stolen-summer,
+#film-the-squat,
+#film-cosmos-heart,
+#film-reel {
+  height: auto;
+  overflow: hidden;
+}
+
+#film-stolen-summer a,
+#film-the-squat a,
+#film-cosmos-heart a,
+#film-reel a {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: auto;
+  padding-bottom: 56.25%; /* 16:9 */
+  overflow: hidden;
+}
+
+#film-the-squat a {
+  padding-bottom: 43.25%;
+}
+
+#film-stolen-summer iframe,
+#film-the-squat iframe,
+#film-cosmos-heart iframe,
+#film-reel iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+@media (min-width: 768px) {
+  .film-row { margin-right: -24px; margin-left: -24px; }
+}
+
+@media (min-width: 992px) {
+  .film-row { margin-right: -17px; margin-left: -17px; }
+}
+
+@media (min-width: 1200px) {
+  .film-row { margin-right: -18px; margin-left: -18px; }
+}
+
+@media (min-width: 1300px) {
+  .film-row { margin-right: -15px; margin-left: -15px; }
+}
+
+/* Carrusel (Yeta System): una foto a la vez, se desliza, es infinito
+   (js/main.js). Las flechas tienen la forma de las del visor de fotos, pero
+   van dentro de la foto y en blanco para que se vean sobre la imagen. */
+.carousel {
+  position: relative;
+  width: calc(100% / 3);
+  margin-left: calc(-1 * var(--bleed) + 1.7%);   /* alineado con el texto (.project-info) */
+}
+
+.carousel__track {
+  display: flex;
+  overflow: hidden;
+  touch-action: pan-y;   /* el gesto horizontal lo maneja el carrusel */
+}
+
+.carousel__track > * {
+  flex: 0 0 100%;
+  transition: transform 0.5s ease;
+}
+
+.carousel__track img {
+  display: block;
+  width: 100%;
+  height: auto;
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+.carousel__arrow {
+  position: absolute;
+  top: 50%;
+  width: 25px;
+  height: 26px;
+  margin-top: -13px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 333ms cubic-bezier(0.4, 0, 0.22, 1);
+}
+
+.carousel__arrow--prev { left: 20px; }
+.carousel__arrow--next { right: 20px; }
+
+/* Aparecen al pasar el mouse; en pantallas táctiles siempre se ven */
+.carousel:hover .carousel__arrow,
+.carousel__arrow:focus-visible {
+  opacity: 1;
+}
+
+@media (hover: none) {
+  .carousel__arrow { opacity: 1; }
+}
+
+.carousel__arrow::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  width: 25px;
+  height: 26px;
+  box-shadow: 1px 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.carousel__arrow--prev::before { transform: rotate(135deg); }
+.carousel__arrow--next::before { transform: rotate(315deg); }
+
+.carousel__arrow:hover::before {
+  box-shadow: 1px 1px 0 #fff;
+}
+
+@media (max-width: 767px) {
+  .carousel { width: 100%; }
+}
+
+
+/* 11. Textos de films y proyectos
+   ========================================================================== */
+
+.project-info {
+  /* Alto de una línea de texto, para los espacios entre párrafos */
+  --info-line: calc(var(--fs-s) * var(--line-height));
+  margin-right: calc(-1 * var(--bleed));
+  margin-left: calc(-1 * var(--bleed));
+  margin-bottom: var(--space-m);   /* texto → video o fotos */
+  padding: 0 1.4% 0 1.7%;
+  font-family: var(--font-texts);
+  line-height: var(--line-height);
+  text-align: left;
+}
+
+.film-row + .project-info {
+  margin-top: var(--space-l);
+}
+
+.project-info__title,
+.project-info__text,
+.project-info__note,
+.project-info__credit {
+  display: block;
+  margin: 0;
+  color: var(--color-text);
+  font-family: var(--font-texts);
+  font-size: var(--fs-s);
+  font-style: normal;
+  font-weight: 300;
+  line-height: var(--line-height);   /* el mismo que los párrafos en Arial */
+  letter-spacing: 0;
+  text-align: left;
+}
+
+.project-info__title--strong {
+  font-weight: bold;
+}
+
+/* La negrita no cambia el tamaño (la regla general de strong lo agranda) */
+.project-info strong {
+  font-size: inherit;
+}
+
+.project-info__title {
+  font-size: var(--fs-m);   /* 12px, como los títulos de sección */
+}
+
+.project-info__note {
+  font-size: var(--fs-s);
+}
+
+.project-info__credit {
+  font-style: italic;
+  text-align: right;
+}
+
+/* Textos largos (Yeta System, Saint Peter): una línea en blanco entre párrafos
+   y dos después del título o subtítulo */
+.project-info--prose > * + * {
+  margin-top: var(--info-line);
+}
+
+.project-info--prose > .project-info__title + .project-info__text,
+.project-info--prose > .project-info__note + .project-info__text {
+  margin-top: calc(var(--info-line) * 2);
+}
+
+
+/* 12. Ajustes de posición puntuales (collage de la sección Gallery)
+   Las filas se suben con margen negativo para que el resto de la página
+   siga su posición real y no queden huecos.
+   ========================================================================== */
+
+.row.row--pull-up-13  { margin-top: calc(var(--space-m) - 13vh); }
+.row.row--push-down-3 { margin-top: calc(var(--space-m) + 3vh); }
+
+.nudge-left-9        { position: relative; left: -9vh; }
+.nudge-up-8-left-17  { position: relative; top: -8vh; right: 17vh; }
+
+
+/* 13. Footer
+   Mismos estilos de texto que Yeta System (.project-info__text):
+   Times, --fs-s, peso 300, --color-text. Todo centrado.
+   ========================================================================== */
+
+.site-footer {
+  padding: var(--space-xl) 0 var(--space-l);
+  font-family: var(--font-texts);
+  text-align: center;
+}
+
+/* Rectángulo negro provisorio hasta tener el retrato */
+.site-footer__photo {
+  width: clamp(160px, 15vw, 290px);
+  aspect-ratio: 29 / 40;
+  margin: 0 auto;
+  background: #000;
+}
+
+.site-footer__text,
+.site-footer__clients,
+.site-footer__contact {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--color-text);
+  font-family: var(--font-texts);
+  font-size: var(--fs-s);
+  font-style: normal;
+  font-weight: 300;
+  line-height: var(--line-height);
+  letter-spacing: 0;
+  text-align: center;
+}
+
+.site-footer__text {
+  margin-top: var(--space-l);
+}
+
+.site-footer__clients,
+.site-footer__contact {
+  margin-top: calc(var(--space-l) * 7 / 6);
+}
+
+.site-footer__contact a {
+  text-decoration: underline !important;
+  text-underline-offset: 2px;
+}
+
+
+/* 14. Celular: Commissioned, Commissioned Films y Motion
+   ========================================================================== */
+
+@media (max-width: 767px) {
+
+  /* Commissioned: cada proyecto es una fila que se desliza con el dedo.
+     Todas las fotos tienen el mismo alto; se asoma la foto siguiente. */
+  #commissioned .project > .row {
+    gap: var(--space-s);
+    padding: 0 1.4%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 1.4%;
+    scrollbar-width: none;
+  }
+
+  #commissioned .project > .row::-webkit-scrollbar {
+    display: none;
+  }
+
+  #commissioned .project > .row > [class*="col-"] {
+    flex: 0 0 auto;
+    width: auto;
+    padding: 0;
+    scroll-snap-align: start;
+  }
+
+  #commissioned .project > .row > .col-spacer {
+    display: none;
+  }
+
+  #commissioned .project .row img {
+    width: auto;
+    max-width: none;
+    height: 60vw;
+  }
+
+  /* Commissioned Films: un video debajo del otro, cada uno con su título.
+     Los contenedores se "disuelven" (display: contents) para poder
+     intercalar videos y títulos con order. */
+  #commissioned-films {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #commissioned-films > .row,
+  #films-commissioned,
+  #commissioned-films .caption-row,
+  #commissioned-films .caption-row__second {
+    display: contents;
+  }
+
+  /* Al disolverse la fila se pierden sus márgenes negativos: se reponen
+     para que videos y títulos ocupen el mismo ancho que las fotos */
+  #films-commissioned a:first-child,
+  #films-commissioned a:last-child,
+  #commissioned-films .project-title {
+    width: auto;
+    margin-right: calc(5px - var(--bleed));
+    margin-left: calc(5px - var(--bleed));
+    float: none;
+  }
+
+  #films-commissioned a:first-child { order: 1; }
+  #commissioned-films .caption-row > .project-title { order: 2; }
+  #films-commissioned a:last-child { order: 3; margin-top: var(--space-m); }
+  #commissioned-films .caption-row__second > .project-title { order: 4; }
+
+  #commissioned-films .project-title {
+    margin-top: 1px;   /* igual que en escritorio (.caption-row--films) */
+  }
+
+  /* Bootstrap agrega ::before/::after a las filas; con display: contents
+     ocuparían una celda de la grilla */
+  #commissioned-films > .row::before,
+  #commissioned-films > .row::after,
+  #motion > .row::before,
+  #motion > .row::after {
+    display: none;
+  }
+
+  /* Motion: dos videos por fila en su proporción (16:9), sin espacio vacío.
+     Las dos galerías forman una sola grilla continua. */
+  #motion {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-s);
+    margin-right: calc(5px - var(--bleed));   /* mismo ancho que las fotos de Commissioned */
+    margin-left: calc(5px - var(--bleed));
+  }
+
+  /* El título y el texto conservan su posición: se compensa el margen de la
+     grilla y el espacio entre filas */
+  #motion > .section-bar,
+  #motion > .section-intro {
+    grid-column: 1 / -1;
+    margin-right: -5px;
+    margin-left: -5px;
+    margin-bottom: calc(var(--space-section) - var(--space-s));
+  }
+
+  #motion > .row,
+  #motion-1,
+  #motion-2 {
+    display: contents;
+  }
+
+  #motion-1 a,
+  #motion-2 a {
+    width: auto;
+    height: auto;
+    padding: 0;
+    float: none;
+    aspect-ratio: 16 / 9;
+  }
+}
+
+
+/* 15. Celular: texto y menú
+   ========================================================================== */
+
+@media (max-width: 767px) {
+
+  /* En columnas angostas el texto justificado abre huecos entre palabras */
+  p,
+  .cv-list {
+    text-align: left;
+  }
+}
+
+/* Pantallas táctiles: los enlaces del menú tienen un área de toque más alta
+   sin cambiar cómo se ven (el padding se compensa con margen negativo) */
+@media (hover: none) {
+  .site-header a {
+    display: inline-block;
+    padding: 6px 0;
+    margin: -6px 0;
+  }
+}
