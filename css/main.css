@@ -526,6 +526,12 @@ main > #portraits {
   letter-spacing: 0;
 }
 
+/* Textos del About (Biografía, Exhibitions, Books, Highlights) en un gris más oscuro */
+#about {
+  --color-text: #858484;
+  color: var(--color-text);
+}
+
 /* Texto de Biografía: un punto más chico que los títulos */
 .about p {
   font-size: var(--fs-s);
